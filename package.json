@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && touch docs/.nojekyll",
+    "pages": "pnpm build && git add . && git commit -m 'publish' && git push",
     "start": "next start",
     "lint": "next lint"
   },
