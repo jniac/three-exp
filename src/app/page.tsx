@@ -1,3 +1,4 @@
+import { basePathname } from './config'
 import * as experiments from './exp'
 
 export default function Home() {
@@ -8,7 +9,7 @@ export default function Home() {
         {Object.entries(experiments).map(([key, value]) => {
           const link = `/exp/${key.slice(3)}`
           return (
-            <a key={key} href={link}>
+            <a key={key} href={basePathname + link}>
               {link}
             </a>
           )
