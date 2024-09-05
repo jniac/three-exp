@@ -5,6 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --vw: 100vw; 
+  --vh: 100vh;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,4 +27,15 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.fullsize {
+  width: var(--vw);
+  height: var(--vh);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
