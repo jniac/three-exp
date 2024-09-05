@@ -1,6 +1,4 @@
 
-
-
 export default function Exp1() {
   return (
     <div className='fullsize-center'>
