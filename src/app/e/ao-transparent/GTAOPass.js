@@ -478,7 +478,10 @@ class GTAOPass extends Pass {
     }
 
     this.scene.overrideMaterial = overrideMaterial
+    const originalCameraLayersMask = this.camera.layers.mask
+    this.camera.layers.set(0)
     renderer.render(this.scene, this.camera)
+    this.camera.layers.mask = originalCameraLayersMask
     this.scene.overrideMaterial = null
 
     renderer.autoClear = originalAutoClear

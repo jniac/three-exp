@@ -6,6 +6,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 
 import { Ticker } from '@/some-utilz/ticker'
 
+import { Message } from '@/some-utilz/message'
 import { GTAOPass } from './GTAOPass'
 import { createScene } from './scene'
 
@@ -44,7 +45,7 @@ export function createThree({
   const camera = new PerspectiveCamera(75, width / height, 0.1, 1000)
   camera.position.z = 8
 
-  const orbitControls = new OrbitControls(camera, document.body)
+  const orbitControls = new OrbitControls(camera, renderer.domElement)
 
   const ticker = new Ticker()
   ticker.setActiveDuration(30)
@@ -76,10 +77,18 @@ export function createThree({
     composer.render()
   })
 
+  Message.on('REQUIRE:THREE', m => {
+    m.payload = { three }
+  })
+
   const destroy = () => {
     renderer.domElement.remove()
     ticker.destroy()
   }
 
-  return { renderer, camera, scene, ticker, passes, destroy }
+  const three = { renderer, camera, scene, ticker, passes, destroy }
+
+  return three
 }
+
+export type Three = ReturnType<typeof createThree>

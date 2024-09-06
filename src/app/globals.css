@@ -37,3 +37,11 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.pointer-through {
+  pointer-events: none;
+}
+
+.pointer-through > *:not(.pointer-through) {
+  pointer-events: all;
+}

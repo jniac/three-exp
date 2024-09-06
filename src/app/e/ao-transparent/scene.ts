@@ -32,13 +32,13 @@ export function createScene(ticker: Ticker) {
     new MeshPhysicalMaterial())
   scene.add(knot)
 
-  const box = new Mesh(
-    new BoxGeometry(10, 1, 1),
+  const box1 = new Mesh(
+    new BoxGeometry(10, 1, 3),
     new MeshPhysicalMaterial())
-  scene.add(box)
+  scene.add(box1)
 
   const box2 = new Mesh(
-    new BoxGeometry(1, 10, 1),
+    new BoxGeometry(1, 10, 3),
     new MeshPhysicalMaterial())
   box2.position.set(5, 0, 0)
   scene.add(box2)
