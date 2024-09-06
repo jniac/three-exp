@@ -26,7 +26,7 @@ export function Main() {
   return (
     <div className='page'>
       <ThreeCanvas />
-      <div className='absolute page'>
+      <div className='absolute inset-0 p-8 items-start justify-start select-none'>
         <h1>ao-transparent</h1>
       </div>
     </div>

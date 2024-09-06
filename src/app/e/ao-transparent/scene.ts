@@ -1,4 +1,4 @@
-import { DirectionalLight, EquirectangularReflectionMapping, HemisphereLight, Mesh, MeshPhysicalMaterial, PlaneGeometry, Scene, TorusKnotGeometry } from 'three'
+import { BoxGeometry, DirectionalLight, EquirectangularReflectionMapping, HemisphereLight, Mesh, MeshPhysicalMaterial, PlaneGeometry, Scene, TorusKnotGeometry } from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 
 import { Ticker } from '@/some-utilz/ticker'
@@ -6,7 +6,7 @@ import { Ticker } from '@/some-utilz/ticker'
 export function createScene(ticker: Ticker) {
   const scene = new Scene()
 
-  const useLights = false
+  const useLights = true
   if (useLights) {
     const sun = new DirectionalLight(0xffffff, 1)
     sun.position.set(0, 3, 1)
@@ -21,16 +21,27 @@ export function createScene(ticker: Ticker) {
     .loadAsync('pedestrian_overpass_1k.hdr')
     .then(texture => {
       texture.mapping = EquirectangularReflectionMapping
-      scene.environmentIntensity = .33
-      scene.backgroundBlurriness = 0.5
+      scene.environmentIntensity = .1
       scene.environment = texture
+      scene.backgroundBlurriness = 0.5
       scene.background = texture
     })
 
   const knot = new Mesh(
-    new TorusKnotGeometry(2, 1, 1024, 512),
+    new TorusKnotGeometry(2, 1, 512, 64),
     new MeshPhysicalMaterial())
   scene.add(knot)
+
+  const box = new Mesh(
+    new BoxGeometry(10, 1, 1),
+    new MeshPhysicalMaterial())
+  scene.add(box)
+
+  const box2 = new Mesh(
+    new BoxGeometry(1, 10, 1),
+    new MeshPhysicalMaterial())
+  box2.position.set(5, 0, 0)
+  scene.add(box2)
 
   const glass = new Mesh(
     new PlaneGeometry(10, 10),
@@ -39,8 +50,9 @@ export function createScene(ticker: Ticker) {
       transmission: 1,
       roughness: 0,
       dispersion: .1,
-      ior: 1.5,
+      ior: 2.5,
     }))
+  glass.layers.set(1)
   scene.add(glass)
 
   ticker.onTick(tick => {

@@ -1,16 +1,17 @@
 import { PerspectiveCamera, WebGLRenderer, WebGLRenderTarget } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-import { GTAOPass } from 'three/examples/jsm/postprocessing/GTAOPass'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 
 import { Ticker } from '@/some-utilz/ticker'
 
+import { GTAOPass } from './GTAOPass'
 import { createScene } from './scene'
 
 class MyRenderPass extends RenderPass {
   onBeforeRender: (() => void) | null = null
+  disableBackground = false
   override render(
     renderer: WebGLRenderer,
     writeBuffer: WebGLRenderTarget,
@@ -19,7 +20,14 @@ class MyRenderPass extends RenderPass {
     maskActive: boolean,
   ) {
     this.onBeforeRender?.()
-    super.render(renderer, writeBuffer, readBuffer, deltaTime, maskActive)
+    if (this.disableBackground) {
+      const background = this.scene.background
+      this.scene.background = null
+      super.render(renderer, writeBuffer, readBuffer, deltaTime, maskActive)
+      this.scene.background = background
+    } else {
+      super.render(renderer, writeBuffer, readBuffer, deltaTime, maskActive)
+    }
   }
 }
 
@@ -46,26 +54,23 @@ export function createThree({
 
   const composer = new EffectComposer(renderer)
 
-  const render1 = new MyRenderPass(scene, camera)
-  render1.onBeforeRender = () => {
-    camera.layers.set(0)
+  const render = new MyRenderPass(scene, camera)
+  render.onBeforeRender = () => {
+    camera.layers.enableAll()
   }
-  composer.addPass(render1)
+  composer.addPass(render)
 
-  const render2 = new MyRenderPass(scene, camera)
-  render2.onBeforeRender = () => {
-    camera.layers.set(1)
-  }
-  render2.clear = false
-  render2.enabled = false
-  composer.addPass(render2)
-
-  const ao = new GTAOPass(scene, camera)
+  const ao = new GTAOPass(scene, camera, width, height)
   composer.addPass(ao)
-  ao.enabled = false
 
   const output = new OutputPass()
   composer.addPass(output)
+
+  const passes = {
+    render,
+    ao,
+    output,
+  }
 
   ticker.onTick(() => {
     composer.render()
@@ -76,5 +81,5 @@ export function createThree({
     ticker.destroy()
   }
 
-  return { renderer, camera, scene, ticker, destroy }
+  return { renderer, camera, scene, ticker, passes, destroy }
 }
