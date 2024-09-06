@@ -1,0 +1,3 @@
+[submodule "src/some-utilz"]
+	path = src/some-utilz
+	url = https://github.com/jniac/some-utilz.git

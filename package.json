@@ -5,23 +5,26 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && touch docs/.nojekyll",
-    "pages": "pnpm build && git add . && git commit -m 'publish' && git push",
+    "pages": "pnpm build && git add docs && git commit -m 'publish' && git push",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "next": "14.2.8",
+    "planck": "^1.0.5",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.8"
+    "three": "^0.168.0"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/three": "^0.168.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.8",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.8"
+    "typescript": "^5"
   }
 }

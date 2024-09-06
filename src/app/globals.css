@@ -29,13 +29,11 @@ body {
   }
 }
 
-.fullsize {
+.page {
   width: var(--vw);
   height: var(--vh);
-}
-
-.center {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }

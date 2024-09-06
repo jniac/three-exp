@@ -6,6 +6,7 @@ const nextConfig = {
   trailingSlash: true,
   distDir: isProd ? 'docs' : '.next',
   assetPrefix: isProd ? '/three-exp-test/' : '',
+  // reactStrictMode: false,
 }
 
 export default nextConfig
